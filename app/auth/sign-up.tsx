@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { router } from 'expo-router';
-import { crearUsuario } from '../../lib/db/usuarios';
+import { crearUsuario, obtenerUsuarioPorEmail } from '../../lib/db/usuarios';
 
 export default function SignUp() {
   const [nombre, setNombre] = useState('');
@@ -31,14 +31,21 @@ export default function SignUp() {
 
 function handleRegistrar() {
   if (!validar()) return;
-  const exito = crearUsuario(nombre, email, contrasena);
-  if (!exito) {
+
+  const existente = obtenerUsuarioPorEmail(email);
+  if (existente) {
     Alert.alert('Error', 'Ya existe una cuenta con ese email');
     return;
   }
-  Alert.alert('Exito', 'Usuario registrado', [
-    { text: 'OK', onPress: () => router.replace('/menu') }
-  ]);
+
+  const exito = crearUsuario(nombre, email, contrasena);
+  if (exito) {
+    Alert.alert('Exito', 'Usuario registrado', [
+      { text: 'OK', onPress: () => router.replace('/menu') }
+    ]);
+  } else {
+    Alert.alert('Error', 'No se pudo registrar el usuario');
+  }
 }
 
   return (

@@ -3,15 +3,8 @@ import { Usuario } from '../../types/usuario';
 
 export function crearUsuario(nombre: string, email: string, contrasena: string): boolean {
   try {
-    const existente = db.getFirstSync(
-      'SELECT id FROM usuario WHERE email = ?',
-      [email]
-    );
-    if (existente) {
-      return false;
-    }
     db.runSync(
-      'INSERT INTO usuario (nombre, email, contrasena) VALUES (?, ?, ?)',
+      'INSERT INTO usuario (nombre, email, contrasena) VALUES (?, ?, ?);',
       [nombre, email, contrasena]
     );
     return true;
@@ -20,13 +13,13 @@ export function crearUsuario(nombre: string, email: string, contrasena: string):
   }
 }
 
-export function loginUsuario(email: string, contrasena: string): Usuario | null {
+export function obtenerUsuarioPorEmail(email: string): Usuario | null {
   try {
-    const usuario = db.getFirstSync<Usuario>(
-      'SELECT * FROM usuario WHERE email = ? AND contrasena = ?',
-      [email, contrasena]
+    const resultado = db.getFirstSync<Usuario>(
+      'SELECT * FROM usuario WHERE email = ?;',
+      [email]
     );
-    return usuario ?? null;
+    return resultado ?? null;
   } catch (e) {
     return null;
   }

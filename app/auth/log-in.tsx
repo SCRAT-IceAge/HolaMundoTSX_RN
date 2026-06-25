@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { router } from 'expo-router';
-import { loginUsuario } from '../../lib/db/usuarios';
+import { obtenerUsuarioPorEmail } from '../../lib/db/usuarios';
 
 export default function LogIn() {
   const [email, setEmail] = useState('');
@@ -19,14 +19,20 @@ export default function LogIn() {
     return true;
   }
 
-  function handleLogin() {
+function handleLogin() {
   if (!validar()) return;
-  const usuario = loginUsuario(email, contrasena);
+
+  const usuario = obtenerUsuarioPorEmail(email);
   if (!usuario) {
-    Alert.alert('Error', 'Email o contrasena incorrectos');
+    Alert.alert('Error', 'No existe una cuenta con ese email');
     return;
   }
-  Alert.alert('Bienvenido', `Hola ${usuario.nombre}!`, [
+  if (usuario.contrasena !== contrasena) {
+    Alert.alert('Error', 'Contrasena incorrecta');
+    return;
+  }
+
+  Alert.alert('Exito', 'Sesion iniciada', [
     { text: 'OK', onPress: () => router.replace('/menu') }
   ]);
 }
