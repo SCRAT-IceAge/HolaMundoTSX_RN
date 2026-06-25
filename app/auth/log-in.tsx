@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { obtenerUsuarioPorEmail } from '../../lib/db/usuarios';
+import { iniciarSesion } from '../../lib/sesion';
 
 export default function LogIn() {
   const [email, setEmail] = useState('');
@@ -31,6 +32,8 @@ function handleLogin() {
     Alert.alert('Error', 'Contrasena incorrecta');
     return;
   }
+
+  iniciarSesion(usuario.id);
 
   Alert.alert('Exito', 'Sesion iniciada', [
     { text: 'OK', onPress: () => router.replace('/menu') }

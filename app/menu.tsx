@@ -1,7 +1,10 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
+import { hayUsuarioLogueado } from '../lib/sesion';
 
 export default function Menu() {
+  const logueado = hayUsuarioLogueado();
+
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Menu</Text>
@@ -9,6 +12,7 @@ export default function Menu() {
       <TouchableOpacity style={styles.boton} onPress={() => router.push('/ejercicios/1_1')}>
         <Text style={styles.botonTexto}>Hola Mundo</Text>
       </TouchableOpacity>
+
 
       <TouchableOpacity style={styles.boton} onPress={() => router.push('/auth/sign-up')}>
         <Text style={styles.botonTexto}>Registrarse</Text>
@@ -18,11 +22,14 @@ export default function Menu() {
         <Text style={styles.botonTexto}>Iniciar Sesion</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.boton} onPress={() => router.push('/historial')}>
+      
+      <TouchableOpacity
+        style={[styles.boton, !logueado && styles.botonDeshabilitado]}
+        onPress={() => logueado && router.push('/historial')}
+      >
         <Text style={styles.botonTexto}>Historial</Text>
       </TouchableOpacity>
-
-
+      
     </View>
   );
 }
@@ -47,6 +54,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     width: '100%',
     alignItems: 'center',
+  },
+  botonDeshabilitado: {
+    backgroundColor: '#999',
   },
   botonTexto: {
     color: '#fff',
