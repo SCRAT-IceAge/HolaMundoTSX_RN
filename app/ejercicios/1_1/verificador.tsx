@@ -1,21 +1,15 @@
 import { useState, useCallback } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { View, Text, TextInput, StyleSheet, FlatList } from 'react-native';
 import { ejercicios } from '../../../constants/ejercicios';
 import { generarAST } from '../../../lib/ast/generarAST';
 import { verificarCheckList } from '../../../lib/ast/compararAST';
-import { NodoAST } from '../../../types/ast';
+import { NodoAST, ItemCheckListResultado } from '../../../types/ast';
 
 const ejercicio = ejercicios["1_1"];
 
-type ItemCheckList = {
-  id: string;
-  descripcion: string;
-  correcto: boolean;
-};
-
 export default function Verificador() {
   const [codigo, setCodigo] = useState('');
-  const [checkList, setCheckList] = useState<ItemCheckList[]>(
+  const [checkList, setCheckList] = useState<ItemCheckListResultado[]>(
     ejercicio.checkList.map((item) => ({ ...item, correcto: false }))
   );
 
@@ -23,8 +17,7 @@ export default function Verificador() {
     setCodigo(texto);
     try {
       const astUsuario = generarAST(texto) as NodoAST;
-      const astReferencia = ejercicio.astReferencia as NodoAST;
-      const resultado = verificarCheckList(astUsuario, astReferencia, ejercicio.checkList);
+      const resultado = verificarCheckList(astUsuario, ejercicio.checkList, texto);
       setCheckList(resultado);
     } catch {
       setCheckList(ejercicio.checkList.map((item) => ({ ...item, correcto: false })));

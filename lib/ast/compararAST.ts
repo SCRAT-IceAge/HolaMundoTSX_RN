@@ -1,33 +1,83 @@
-import { NodoAST } from '../../types/ast';
+import { NodoAST, ItemCheckList, ItemCheckListResultado } from '../../types/ast';
 
-export function compararNodos(nodoUsuario: NodoAST, nodoReferencia: NodoAST): boolean {
-  if (!nodoUsuario || !nodoReferencia) return false;
-  if (nodoUsuario.kind !== nodoReferencia.kind) return false;
-  if (nodoReferencia.text && nodoUsuario.text !== nodoReferencia.text) return false;
-  if (nodoReferencia.name && nodoUsuario.name !== nodoReferencia.name) return false;
-
-  if (nodoReferencia.children) {
-    for (let i = 0; i < nodoReferencia.children.length; i++) {
-      const hijoUsuario = nodoUsuario.children?.[i];
-      const hijoReferencia = nodoReferencia.children[i];
-      if (!hijoUsuario || !compararNodos(hijoUsuario, hijoReferencia)) {
-        return false;
-      }
+function buscarNodo(
+  nodo: NodoAST,
+  kind: string,
+  text?: string,
+  name?: string,
+  codigo?: string
+): boolean {
+  if (nodo.kind === kind) {
+    if (text && nodo.text !== text) return false;
+    if (name && nodo.name !== name) return false;
+    if (text && codigo) {
+      const conComillasSimples = `'${text}'`;
+      const conComillasDobles = `"${text}"`;
+      if (!codigo.includes(conComillasSimples) && !codigo.includes(conComillasDobles)) return false;
     }
+    return true;
   }
+  if (nodo.children) {
+    return nodo.children.some((hijo) => buscarNodo(hijo, kind, text, name, codigo));
+  }
+  return false;
+}
 
-  return true;
+function buscarCallExpressionCompleto(
+  nodo: NodoAST,
+  name: string,
+  argKind: string,
+  argText?: string,
+  codigo?: string
+): boolean {
+  if (nodo.kind === 'CallExpression' && nodo.children) {
+    const tieneAcceso = nodo.children.some((h) =>
+      h.kind === 'PropertyAccessExpression' && h.name === name
+    );
+    const tieneArgumento = nodo.children.some((h) =>
+      h.kind === argKind && (!argText || h.text === argText)
+    );
+    const parentesisCerrado = codigo
+      ? codigo.trimEnd().endsWith(')') || codigo.trimEnd().endsWith(');')
+      : true;
+    const stringCerrado = argText && codigo
+      ? codigo.includes(`'${argText}'`) || codigo.includes(`"${argText}"`)
+      : true;
+    if (tieneAcceso && tieneArgumento && parentesisCerrado && stringCerrado) return true;
+  }
+  if (nodo.children) {
+    return nodo.children.some((hijo) =>
+      buscarCallExpressionCompleto(hijo, name, argKind, argText, codigo)
+    );
+  }
+  return false;
 }
 
 export function verificarCheckList(
   astUsuario: NodoAST,
-  astReferencia: NodoAST,
-  checkList: readonly { id: string; descripcion: string }[]
-): { id: string; descripcion: string; correcto: boolean }[] {
-  const astCorrecto = compararNodos(astUsuario, astReferencia);
+  checkList: readonly ItemCheckList[],
+  codigo: string
+): ItemCheckListResultado[] {
+  const resultados: ItemCheckListResultado[] = [];
 
-  return checkList.map((item) => ({
-    ...item,
-    correcto: astCorrecto,
-  }));
+  for (const item of checkList) {
+    let nodoCorrecto: boolean;
+
+    if (item.callName && item.argKind) {
+      nodoCorrecto = buscarCallExpressionCompleto(astUsuario, item.callName, item.argKind, item.text, codigo);
+    } else {
+      nodoCorrecto = buscarNodo(astUsuario, item.kind, item.text, item.name, codigo);
+    }
+
+    const dependenciaCumplida = item.dependeDe
+      ? resultados.find((r) => r.id === item.dependeDe)?.correcto ?? false
+      : true;
+
+    resultados.push({
+      ...item,
+      correcto: nodoCorrecto && dependenciaCumplida,
+    });
+  }
+
+  return resultados;
 }
