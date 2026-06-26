@@ -4,6 +4,8 @@ import { ejercicios } from '../../../constants/ejercicios';
 import { generarAST } from '../../../lib/ast/generarAST';
 import { verificarCheckList } from '../../../lib/ast/compararAST';
 import { NodoAST, ItemCheckListResultado } from '../../../types/ast';
+import { obtenerUsuarioId } from '../../../lib/sesion';
+import { guardarIntento } from '../../../lib/db/intentos';
 
 const ejercicio = ejercicios["1_1"];
 
@@ -16,6 +18,7 @@ export default function Verificador() {
   const [tiempo, setTiempo] = useState(0);
   const intervalo = useRef<ReturnType<typeof setInterval> | null>(null);
   const iniciado = useRef(false);
+  const completado = useRef(false);
 
   useEffect(() => {
     return () => {
@@ -38,6 +41,19 @@ export default function Verificador() {
     }
   }
 
+  function guardarSiCompleto(resultado: ItemCheckListResultado[], tiempoFinal: number) {
+    if (completado.current) return;
+    const todosCorrecto = resultado.every((item) => item.correcto);
+    if (todosCorrecto) {
+      completado.current = true;
+      detenerCronometro();
+      const id_usuario = obtenerUsuarioId();
+      if (id_usuario !== null) {
+        guardarIntento(id_usuario, '1_1', tiempoFinal);
+      }
+    }
+  }
+
   const handleCambioTexto = useCallback((texto: string) => {
     setCodigo(texto);
     if (texto.length > 0) iniciarCronometro();
@@ -46,20 +62,19 @@ export default function Verificador() {
       const astUsuario = generarAST(texto) as NodoAST;
       const resultado = verificarCheckList(astUsuario, ejercicio.checkList, texto);
       setCheckList(resultado);
-
-      const todosCorrecto = resultado.every((item) => item.correcto);
-      if (todosCorrecto) detenerCronometro();
+      guardarSiCompleto(resultado, tiempo);
     } catch {
       setCheckList(ejercicio.checkList.map((item) => ({ ...item, correcto: false })));
     }
-  }, []);
+  }, [tiempo]);
 
-function formatearTiempo(centesimas: number): string {
-  const m = Math.floor(centesimas / 6000).toString().padStart(2, '0');
-  const s = Math.floor((centesimas % 6000) / 100).toString().padStart(2, '0');
-  const cs = (centesimas % 100).toString().padStart(2, '0');
-  return `${m}:${s}.${cs}`;
-}
+  function formatearTiempo(centesimas: number): string {
+    const m = Math.floor(centesimas / 6000).toString().padStart(2, '0');
+    const s = Math.floor((centesimas % 6000) / 100).toString().padStart(2, '0');
+    const cs = (centesimas % 100).toString().padStart(2, '0');
+    return `${m}:${s}.${cs}`;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.controles}>
