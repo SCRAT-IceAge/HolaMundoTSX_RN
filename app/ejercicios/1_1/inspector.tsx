@@ -1,23 +1,53 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Switch } from 'react-native';
+import { useFocusEffect } from 'expo-router';
+import { useCallback } from 'react';
 import { ejercicios } from '../../../constants/ejercicios';
+import { getModoOscuro, setModoOscuro } from '../../../lib/sesion';
 
 const ejercicio = ejercicios["1_1"];
 
 export default function Inspector() {
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.titulo}>{ejercicio.nombre}</Text>
-      <Text style={styles.subtitulo}>Leccion {ejercicio.leccion}</Text>
+  const [oscuro, setOscuro] = useState(getModoOscuro());
 
-      <Text style={styles.label}>Codigo a escribir:</Text>
-      <View style={styles.codigoContainer}>
+  useFocusEffect(
+    useCallback(() => {
+      setOscuro(getModoOscuro());
+    }, [])
+  );
+
+  function toggleModo(valor: boolean) {
+    setModoOscuro(valor);
+    setOscuro(valor);
+  }
+
+  const colores = {
+    fondo: oscuro ? '#1e1e1e' : '#fff',
+    texto: oscuro ? '#fff' : '#000',
+    subtitulo: oscuro ? '#aaa' : '#666',
+    codigoFondo: oscuro ? '#2d2d2d' : '#1e1e1e',
+    checkTexto: oscuro ? '#ccc' : '#333',
+  };
+
+  return (
+    <ScrollView contentContainerStyle={[styles.container, { backgroundColor: colores.fondo }]}>
+      <View style={styles.switchRow}>
+        <Text style={[styles.switchLabel, { color: colores.texto }]}>Modo oscuro</Text>
+        <Switch value={oscuro} onValueChange={toggleModo} />
+      </View>
+
+      <Text style={[styles.titulo, { color: colores.texto }]}>{ejercicio.nombre}</Text>
+      <Text style={[styles.subtitulo, { color: colores.subtitulo }]}>Leccion {ejercicio.leccion}</Text>
+
+      <Text style={[styles.label, { color: colores.texto }]}>Codigo a escribir:</Text>
+      <View style={[styles.codigoContainer, { backgroundColor: colores.codigoFondo }]}>
         <Text style={styles.codigo}>{ejercicio.codigoResuelto}</Text>
       </View>
 
-      <Text style={styles.label}>Que debe contener:</Text>
+      <Text style={[styles.label, { color: colores.texto }]}>Que debe contener:</Text>
       {ejercicio.checkList.map((item) => (
         <View key={item.id} style={styles.checkItem}>
-          <Text style={styles.checkTexto}>• {item.descripcion}</Text>
+          <Text style={[styles.checkTexto, { color: colores.checkTexto }]}>• {item.descripcion}</Text>
         </View>
       ))}
     </ScrollView>
@@ -28,6 +58,16 @@ const styles = StyleSheet.create({
   container: {
     padding: 24,
     gap: 12,
+    flexGrow: 1,
+  },
+  switchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  switchLabel: {
+    fontSize: 15,
   },
   titulo: {
     fontSize: 28,
@@ -35,7 +75,6 @@ const styles = StyleSheet.create({
   },
   subtitulo: {
     fontSize: 14,
-    color: '#666',
     marginBottom: 16,
   },
   label: {
@@ -44,7 +83,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   codigoContainer: {
-    backgroundColor: '#1e1e1e',
     borderRadius: 8,
     padding: 16,
   },
@@ -58,6 +96,5 @@ const styles = StyleSheet.create({
   },
   checkTexto: {
     fontSize: 15,
-    color: '#333',
   },
 });

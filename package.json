@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "expo": "~54.0.34",
+    "expo-linking": "^56.0.14",
     "expo-notifications": "~0.32.17",
     "expo-router": "~6.0.24",
     "expo-sqlite": "~16.0.10",

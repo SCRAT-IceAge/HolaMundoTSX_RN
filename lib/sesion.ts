@@ -1,4 +1,5 @@
 let usuarioId: number | null = null;
+let modoOscuro: boolean = false;
 
 export function iniciarSesion(id: number) {
   usuarioId = id;
@@ -14,4 +15,12 @@ export function obtenerUsuarioId(): number | null {
 
 export function hayUsuarioLogueado(): boolean {
   return usuarioId !== null;
+}
+
+export function getModoOscuro(): boolean {
+  return modoOscuro;
+}
+
+export function setModoOscuro(valor: boolean) {
+  modoOscuro = valor;
 }
