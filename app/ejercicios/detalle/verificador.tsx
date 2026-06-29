@@ -5,7 +5,7 @@ import { ejercicios } from '../../../constants/ejercicios/index';
 import { ItemCheckListResultado } from '../../../types/verificacion';
 import { obtenerUsuarioId, getModoOscuro, setModoOscuro, getEjercicioActual } from '../../../lib/sesion';
 import { guardarIntento } from '../../../lib/db/intentos';
-import { verificarCheckList } from '../../../lib/ast/checkList';
+import { verificarCheckList } from '../../../lib/checkList';
 import { setTabActual } from '../../../lib/sesion';
 
 export default function Verificador() {
