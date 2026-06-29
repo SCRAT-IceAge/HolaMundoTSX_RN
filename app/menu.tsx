@@ -9,10 +9,13 @@ export default function Menu() {
     <View style={styles.container}>
       <Text style={styles.titulo}>Menu</Text>
 
+      <TouchableOpacity style={styles.boton} onPress={() => { setEjercicioActual('1_2'); router.push('/ejercicios/detalle'); }}>
+        <Text style={styles.botonTexto}>Estilos con StyleSheet</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.boton} onPress={() => { setEjercicioActual('1_1'); router.push('/ejercicios/detalle'); }}>
         <Text style={styles.botonTexto}>Hola Mundo</Text>
       </TouchableOpacity>
-
 
       <TouchableOpacity style={styles.boton} onPress={() => router.push('/auth/sign-up')}>
         <Text style={styles.botonTexto}>Registrarse</Text>
