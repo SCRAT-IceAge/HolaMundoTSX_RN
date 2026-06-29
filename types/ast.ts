@@ -1,22 +1,14 @@
-export type NodoAST = {
-  kind: string;
-  text?: string;
-  name?: string;
-  expression?: string;
-  children?: NodoAST[];
-};
-
 export type ItemCheckList = {
   id: string;
   descripcion: string;
-  kind: string;
-  text?: string;
-  name?: string;
+  existe: (codigo: string) => boolean;
   dependeDe?: string;
-  callName?: string;
-  argKind?: string;
+  dentroDe?: (codigo: string) => boolean;
 };
 
-export type ItemCheckListResultado = ItemCheckList & {
+export type ItemCheckListResultado = {
+  id: string;
+  descripcion: string;
   correcto: boolean;
+  dependeDe?: string;
 };

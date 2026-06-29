@@ -10,10 +10,11 @@ export default function RootLayout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="menu" options={{ title: 'Menú' }} />
+      <Stack.Screen name="menu" options={{ title: 'Menu' }} />
       <Stack.Screen name="historial" options={{ title: 'Historial' }} />
       <Stack.Screen name="auth/sign-up" options={{ title: 'Registrarse' }} />
-      <Stack.Screen name="auth/log-in" options={{ title: 'Iniciar Sesión' }} />
+      <Stack.Screen name="auth/log-in" options={{ title: 'Iniciar Sesion' }} />
+      <Stack.Screen name="ejercicios/detalle" options={{ headerShown: false }} />
     </Stack>
   );
 }

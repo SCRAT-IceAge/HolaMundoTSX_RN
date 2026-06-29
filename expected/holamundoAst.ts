@@ -2,31 +2,172 @@ export const expectedholamundoAst = {
   "kind": "SourceFile",
   "children": [
     {
-      "kind": "ExpressionStatement",
+      "kind": "ImportDeclaration",
       "children": [
         {
-          "kind": "CallExpression",
+          "kind": "ImportClause",
           "children": [
             {
-              "kind": "PropertyAccessExpression",
-              "expression": "Identifier",
-              "name": "log",
+              "kind": "NamedImports",
+              "children": [
+                {
+                  "kind": "ImportSpecifier",
+                  "children": [
+                    {
+                      "kind": "Identifier",
+                      "text": "View"
+                    }
+                  ]
+                },
+                {
+                  "kind": "ImportSpecifier",
+                  "children": [
+                    {
+                      "kind": "Identifier",
+                      "text": "Text"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "StringLiteral",
+          "text": "react-native"
+        }
+      ]
+    },
+    {
+      "kind": "FirstStatement",
+      "children": [
+        {
+          "kind": "VariableDeclarationList",
+          "children": [
+            {
+              "kind": "VariableDeclaration",
               "children": [
                 {
                   "kind": "Identifier",
-                  "text": "console"
+                  "text": "App"
                 },
                 {
-                  "kind": "Identifier",
-                  "text": "log"
+                  "kind": "TypeReference",
+                  "children": [
+                    {
+                      "kind": "FirstNode",
+                      "children": [
+                        {
+                          "kind": "Identifier",
+                          "text": "React"
+                        },
+                        {
+                          "kind": "Identifier",
+                          "text": "FC"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "kind": "ArrowFunction",
+                  "children": [
+                    {
+                      "kind": "EqualsGreaterThanToken"
+                    },
+                    {
+                      "kind": "Block",
+                      "children": [
+                        {
+                          "kind": "ReturnStatement",
+                          "children": [
+                            {
+                              "kind": "ParenthesizedExpression",
+                              "children": [
+                                {
+                                  "kind": "JsxElement",
+                                  "children": [
+                                    {
+                                      "kind": "JsxOpeningElement",
+                                      "children": [
+                                        {
+                                          "kind": "Identifier",
+                                          "text": "View"
+                                        },
+                                        {
+                                          "kind": "JsxAttributes"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "kind": "JsxText",
+                                      "text": "\r\n       "
+                                    },
+                                    {
+                                      "kind": "JsxElement",
+                                      "children": [
+                                        {
+                                          "kind": "JsxOpeningElement",
+                                          "children": [
+                                            {
+                                              "kind": "Identifier",
+                                              "text": "Text"
+                                            },
+                                            {
+                                              "kind": "JsxAttributes"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "kind": "JsxText",
+                                          "text": "HolaMundo"
+                                        },
+                                        {
+                                          "kind": "JsxClosingElement",
+                                          "children": [
+                                            {
+                                              "kind": "Identifier",
+                                              "text": "Text"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "kind": "JsxText",
+                                      "text": "\r\n     "
+                                    },
+                                    {
+                                      "kind": "JsxClosingElement",
+                                      "children": [
+                                        {
+                                          "kind": "Identifier",
+                                          "text": "View"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
-            },
-            {
-              "kind": "StringLiteral",
-              "text": "Hola Mundo"
             }
           ]
+        }
+      ]
+    },
+    {
+      "kind": "ExportAssignment",
+      "children": [
+        {
+          "kind": "Identifier",
+          "text": "App"
         }
       ]
     },

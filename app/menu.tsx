@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
-import { hayUsuarioLogueado } from '../lib/sesion';
+import { hayUsuarioLogueado, setEjercicioActual } from '../lib/sesion';
 
 export default function Menu() {
   const logueado = hayUsuarioLogueado();
@@ -9,7 +9,7 @@ export default function Menu() {
     <View style={styles.container}>
       <Text style={styles.titulo}>Menu</Text>
 
-      <TouchableOpacity style={styles.boton} onPress={() => router.push('/ejercicios/1_1')}>
+      <TouchableOpacity style={styles.boton} onPress={() => { setEjercicioActual('1_1'); router.push('/ejercicios/detalle'); }}>
         <Text style={styles.botonTexto}>Hola Mundo</Text>
       </TouchableOpacity>
 
@@ -22,14 +22,14 @@ export default function Menu() {
         <Text style={styles.botonTexto}>Iniciar Sesion</Text>
       </TouchableOpacity>
 
-      
+
       <TouchableOpacity
         style={[styles.boton, !logueado && styles.botonDeshabilitado]}
         onPress={() => logueado && router.push('/historial')}
       >
         <Text style={styles.botonTexto}>Historial</Text>
       </TouchableOpacity>
-      
+
     </View>
   );
 }

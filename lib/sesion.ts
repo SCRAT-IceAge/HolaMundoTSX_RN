@@ -1,5 +1,6 @@
 let usuarioId: number | null = null;
 let modoOscuro: boolean = false;
+let ejercicioActual: string = '1_1';
 
 export function iniciarSesion(id: number) {
   usuarioId = id;
@@ -23,4 +24,12 @@ export function getModoOscuro(): boolean {
 
 export function setModoOscuro(valor: boolean) {
   modoOscuro = valor;
+}
+
+export function getEjercicioActual(): string {
+  return ejercicioActual;
+}
+
+export function setEjercicioActual(id: string) {
+  ejercicioActual = id;
 }

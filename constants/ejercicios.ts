@@ -1,51 +1,79 @@
-import { NodoAST, ItemCheckList } from '../types/ast';
+import { ItemCheckList } from '../types/ast';
 
 export const ejercicios: Record<string, {
   nombre: string;
   leccion: string;
   codigoResuelto: string;
-  astReferencia: object;
   checkList: readonly ItemCheckList[];
 }> = {
   "1_1": {
     nombre: "Hola Mundo",
     leccion: "1",
-    codigoResuelto: "console.log('Hola Mundo');",
-    astReferencia: {
-      kind: "SourceFile",
-      children: [
-        {
-          kind: "ExpressionStatement",
-          children: [
-            {
-              kind: "CallExpression",
-              children: [
-                {
-                  kind: "PropertyAccessExpression",
-                  expression: "Identifier",
-                  name: "log",
-                  children: [
-                    { kind: "Identifier", text: "console" },
-                    { kind: "Identifier", text: "log" }
-                  ]
-                },
-                {
-                  kind: "StringLiteral",
-                  text: "Hola Mundo"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          kind: "EndOfFileToken"
-        }
-      ]
-    },
-    checkList: [
-      { id: "1", descripcion: 'Escribiste "Hola Mundo"', kind: "StringLiteral", text: "Hola Mundo" },
-      { id: "2", descripcion: 'Escribiste console.log("Hola Mundo")', kind: "CallExpression", callName: "log", argKind: "StringLiteral", text: "Hola Mundo" },
-    ]
+    codigoResuelto: `import React from 'react';
+import {View, Text} from 'react-native'
+
+const App: React.FC = () =>{
+   return(
+     <View>
+       <Text>HolaMundo</Text>
+     </View>
+  )
+}
+
+export default App`,
+checkList: [
+  {
+    id: "1",
+    descripcion: "Import React from 'react'",
+    existe: (codigo) => /import\s+React\s+from\s+['"]react['"]/.test(codigo),
+  },
+  {
+    id: "2",
+    descripcion: "Import {View, Text} from 'react-native'",
+    existe: (codigo) =>
+      /import\s*\{[^}]*View[^}]*Text[^}]*\}\s*from\s*['"]react-native['"]/.test(codigo) ||
+      /import\s*\{[^}]*Text[^}]*View[^}]*\}\s*from\s*['"]react-native['"]/.test(codigo),
+  },
+  {
+    id: "3",
+    descripcion: "const App: React.FC = () => {}",
+    dependeDe: "1",
+    existe: (codigo) => /const\s+App\s*:\s*React\.FC\s*=\s*\(\s*\)\s*=>/.test(codigo),
+  },
+  {
+    id: "4",
+    descripcion: "App tiene return()",
+    dependeDe: "3",
+    existe: (codigo) => /return\s*\(/.test(codigo),
+  },
+  {
+    id: "5",
+    descripcion: "return contiene <View></View>",
+    dependeDe: "4",
+    existe: (codigo) => /<View[\s\S]*?<\/View>/.test(codigo),
+    dentroDe: (codigo) => /return\s*\([\s\S]*?<View[\s\S]*?<\/View>[\s\S]*?\)/.test(codigo),
+  },
+  {
+    id: "6",
+    descripcion: "<View></View> contiene <Text></Text>",
+    dependeDe: "5",
+    existe: (codigo) => /<Text[\s\S]*?<\/Text>/.test(codigo),
+    dentroDe: (codigo) => /<View[\s\S]*?>\s*<Text[\s\S]*?<\/Text>\s*<\/View>/.test(codigo),
+  },
+  {
+    id: "7",
+    descripcion: "<Text> contiene HolaMundo",
+    dependeDe: "6",
+    existe: (codigo) => /HolaMundo/.test(codigo),
+    dentroDe: (codigo) => /<Text[^>]*>HolaMundo<\/Text>/.test(codigo),
+  },
+  {
+    id: "8",
+    descripcion: "export default App",
+    dependeDe: "3",
+    existe: (codigo) => /export\s+default\s+App/.test(codigo),
+  },
+]
   }
 };
 

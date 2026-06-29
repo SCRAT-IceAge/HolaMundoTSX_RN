@@ -2,18 +2,18 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, Switch } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { ejercicios } from '../../../constants/ejercicios';
-import { generarAST } from '../../../lib/ast/generarAST';
-import { verificarCheckList } from '../../../lib/ast/compararAST';
-import { NodoAST, ItemCheckListResultado } from '../../../types/ast';
-import { obtenerUsuarioId, getModoOscuro, setModoOscuro } from '../../../lib/sesion';
+import { ItemCheckListResultado } from '../../../types/ast';
+import { obtenerUsuarioId, getModoOscuro, setModoOscuro, getEjercicioActual } from '../../../lib/sesion';
 import { guardarIntento } from '../../../lib/db/intentos';
-
-const ejercicio = ejercicios["1_1"];
+import { verificarCheckList } from '../../../lib/ast/checkList';
 
 export default function Verificador() {
+  const id = getEjercicioActual();
+  const ejercicio = ejercicios[id];
+
   const [codigo, setCodigo] = useState('');
   const [checkList, setCheckList] = useState<ItemCheckListResultado[]>(
-    ejercicio.checkList.map((item) => ({ ...item, correcto: false }))
+    ejercicio?.checkList.map((item) => ({ id: item.id, descripcion: item.descripcion, correcto: false })) ?? []
   );
   const [mostrarTiempo, setMostrarTiempo] = useState(false);
   const [tiempo, setTiempo] = useState(0);
@@ -62,7 +62,7 @@ export default function Verificador() {
       detenerCronometro();
       const id_usuario = obtenerUsuarioId();
       if (id_usuario !== null) {
-        guardarIntento(id_usuario, '1_1', tiempoFinal);
+        guardarIntento(id_usuario, id, tiempoFinal);
       }
     }
   }
@@ -70,14 +70,9 @@ export default function Verificador() {
   const handleCambioTexto = useCallback((texto: string) => {
     setCodigo(texto);
     if (texto.length > 0) iniciarCronometro();
-    try {
-      const astUsuario = generarAST(texto) as NodoAST;
-      const resultado = verificarCheckList(astUsuario, ejercicio.checkList, texto);
-      setCheckList(resultado);
-      guardarSiCompleto(resultado, tiempo);
-    } catch {
-      setCheckList(ejercicio.checkList.map((item) => ({ ...item, correcto: false })));
-    }
+    const resultado = verificarCheckList(texto, ejercicio.checkList);
+    setCheckList(resultado);
+    guardarSiCompleto(resultado, tiempo);
   }, [tiempo]);
 
   function formatearTiempo(centesimas: number): string {
@@ -94,6 +89,14 @@ export default function Verificador() {
     editorFondo: oscuro ? '#2d2d2d' : '#fff',
     checkTexto: oscuro ? '#ccc' : '#333',
   };
+
+  if (!ejercicio) {
+    return (
+      <View style={styles.container}>
+        <Text>Ejercicio no encontrado.</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: colores.fondo }]}>
@@ -137,14 +140,16 @@ export default function Verificador() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    gap: 12,
+    padding: 8,
+    gap: 8,
   },
   controles: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
     flexWrap: 'wrap',
+    paddingTop: 2,
+    paddingBottom: 2,
   },
   label: {
     fontSize: 14,
@@ -169,13 +174,14 @@ const styles = StyleSheet.create({
   checkItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8,
-    gap: 10,
+    paddingVertical: 2,
+    gap: 4,
   },
   icono: {
     fontSize: 18,
   },
   descripcion: {
-    fontSize: 15,
+    fontSize: 12,
+    flexShrink: 1,
   },
 });
