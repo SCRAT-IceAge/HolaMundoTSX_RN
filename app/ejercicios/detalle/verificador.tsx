@@ -6,6 +6,7 @@ import { ItemCheckListResultado } from '../../../types/verificacion';
 import { obtenerUsuarioId, getModoOscuro, setModoOscuro, getEjercicioActual } from '../../../lib/sesion';
 import { guardarIntento } from '../../../lib/db/intentos';
 import { verificarCheckList } from '../../../lib/ast/checkList';
+import { setTabActual } from '../../../lib/sesion';
 
 export default function Verificador() {
   const id = getEjercicioActual();
@@ -30,7 +31,17 @@ export default function Verificador() {
 
   useFocusEffect(
     useCallback(() => {
+      setTabActual('verificador');
       setOscuro(getModoOscuro());
+      const nuevoId = getEjercicioActual();
+      const nuevoEjercicio = ejercicios[nuevoId];
+      if (nuevoEjercicio) {
+        setCheckList(nuevoEjercicio.checkList.map((item) => ({ id: item.id, descripcion: item.descripcion, correcto: false })));
+        setCodigo('');
+        iniciado.current = false;
+        completado.current = false;
+        setTiempo(0);
+      }
     }, [])
   );
 

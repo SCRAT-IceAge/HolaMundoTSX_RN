@@ -1,10 +1,120 @@
-import { Tabs } from 'expo-router';
+import { useState, useRef } from 'react';
+import { View, Text, StyleSheet, PanResponder } from 'react-native';
+import { Tabs, router } from 'expo-router';
+import { ejercicios } from '../../../constants/ejercicios/index';
+import { setEjercicioActual, getEjercicioActual, getTabActual } from '../../../lib/sesion';
+
+const EJERCICIOS = Object.keys(ejercicios);
 
 export default function EjercicioLayout() {
+
+  const [posicion, setPosicion] = useState(0);
+  const [mostrarEtiqueta, setMostrarEtiqueta] = useState(false);
+  const [nombreEjercicio, setNombreEjercicio] = useState('');
+  const barraRef = useRef<View>(null);
+  const alturaBarraRef = useRef(0);
+  const [ejercicioKey, setEjercicioKey] = useState(getEjercicioActual());
+
+  function calcularEjercicio(y: number) {
+    const porcentaje = Math.max(0, Math.min(1, y / alturaBarraRef.current));
+    const indice = Math.min(
+      Math.floor(porcentaje * EJERCICIOS.length),
+      EJERCICIOS.length - 1
+    );
+    const id = EJERCICIOS[indice];
+    const ej = ejercicios[id];
+    setPosicion(porcentaje);
+    setNombreEjercicio(`Leccion ${ej.leccion} · ${id} - ${ej.nombre}`);
+    setEjercicioActual(id);
+  }
+
+  function navegar() {
+    const tab = getTabActual();
+    console.log('navegando a tab:', tab, 'ejercicio:', getEjercicioActual());
+    router.push(`/ejercicios/detalle/${tab}`);
+  }
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderGrant: (e) => {
+      setMostrarEtiqueta(true);
+      barraRef.current?.measure((x, y, width, height, pageX, pageY) => {
+        alturaBarraRef.current = height;
+        calcularEjercicio(e.nativeEvent.pageY - pageY);
+      });
+    },
+    onPanResponderMove: (e) => {
+      barraRef.current?.measure((x, y, width, height, pageX, pageY) => {
+        alturaBarraRef.current = height;
+        calcularEjercicio(e.nativeEvent.pageY - pageY);
+      });
+    },
+    onPanResponderRelease: () => {
+      setMostrarEtiqueta(false);
+      setEjercicioKey(getEjercicioActual());
+      navegar();
+    },
+  });
+
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
-      <Tabs.Screen name="inspector" options={{ title: 'Inspector' }} />
-      <Tabs.Screen name="verificador" options={{ title: 'Verificador' }} />
-    </Tabs>
+    <View key={ejercicioKey} style={styles.container}>
+      <Tabs screenOptions={{ headerShown: false }}>
+        <Tabs.Screen name="inspector" options={{ title: 'Inspector' }} />
+        <Tabs.Screen name="verificador" options={{ title: 'Verificador' }} />
+      </Tabs>
+
+      {/* Barra superpuesta */}
+      <View
+        ref={barraRef}
+        style={styles.barra}
+        {...panResponder.panHandlers}
+      >
+        <View style={[styles.indicador, { top: `${posicion * 100}%` }]} />
+      </View>
+
+      {/* Etiqueta flotante */}
+      {mostrarEtiqueta && (
+        <View style={[styles.etiqueta, { top: `${posicion * 100}%` }]}>
+          <Text style={styles.etiquetaTexto}>{nombreEjercicio}</Text>
+        </View>
+      )}
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  barra: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: 20,
+    backgroundColor: '#ddd',
+    borderRadius: 10,
+    zIndex: 100,
+  },
+  indicador: {
+    position: 'absolute',
+    right: -4,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#000',
+  },
+  etiqueta: {
+    position: 'absolute',
+    right: 28,
+    backgroundColor: '#000',
+    borderRadius: 8,
+    padding: 8,
+    zIndex: 101,
+    maxWidth: '80%',
+  },
+  etiquetaTexto: {
+    color: '#fff',
+    fontSize: 12,
+  },
+});

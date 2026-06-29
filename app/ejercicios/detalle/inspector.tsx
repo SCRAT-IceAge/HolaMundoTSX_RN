@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Switch } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { ejercicios } from '../../../constants/ejercicios';
 import { getModoOscuro, setModoOscuro, getEjercicioActual } from '../../../lib/sesion';
+import { setTabActual } from '../../../lib/sesion';
 
 export default function Inspector() {
   const id = getEjercicioActual();
@@ -12,6 +13,7 @@ export default function Inspector() {
 
 	useFocusEffect(
 		useCallback(() => {
+			setTabActual('inspector');
 			setOscuro(getModoOscuro());
 		}, [])
 	);

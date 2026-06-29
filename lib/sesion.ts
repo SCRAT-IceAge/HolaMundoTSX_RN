@@ -1,6 +1,7 @@
 let usuarioId: number | null = null;
 let modoOscuro: boolean = false;
 let ejercicioActual: string = '1_1';
+let tabActual: string = 'inspector';
 
 export function iniciarSesion(id: number) {
   usuarioId = id;
@@ -32,4 +33,12 @@ export function getEjercicioActual(): string {
 
 export function setEjercicioActual(id: string) {
   ejercicioActual = id;
+}
+
+export function getTabActual(): string {
+  return tabActual;
+}
+
+export function setTabActual(tab: string) {
+  tabActual = tab;
 }
