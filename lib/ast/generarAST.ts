@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import { NodoAST } from '../../types/ast';
+import { NodoAST } from '../../types/verificacion';
 
 export function serializarNodo(nodo: ts.Node): NodoAST {
   const resultado: NodoAST = { kind: ts.SyntaxKind[nodo.kind] };

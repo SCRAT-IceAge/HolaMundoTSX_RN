@@ -1,4 +1,4 @@
-import { ItemCheckList } from '../types/ast';
+import { ItemCheckList } from '../types/verificacion';
 
 export const ejercicios: Record<string, {
   nombre: string;

@@ -10,7 +10,7 @@ export default function Menu() {
       <Text style={styles.titulo}>Menu</Text>
 
       <TouchableOpacity style={styles.boton} onPress={() => { setEjercicioActual('1_2'); router.push('/ejercicios/detalle'); }}>
-        <Text style={styles.botonTexto}>Estilos con StyleSheet</Text>
+        <Text style={styles.botonTexto}>Hola Mundo Centrado</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.boton} onPress={() => { setEjercicioActual('1_1'); router.push('/ejercicios/detalle'); }}>

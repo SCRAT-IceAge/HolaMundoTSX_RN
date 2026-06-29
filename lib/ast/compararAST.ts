@@ -11,10 +11,7 @@ export function verificarCheckList(
       ? resultados.find((r) => r.id === item.dependeDe)?.correcto ?? false
       : true;
 
-    const existencia = item.existe(codigo);
-    const pertenencia = item.dentroDe ? item.dentroDe(codigo) : true;
-
-    const correcto = dependenciaCumplida && existencia && pertenencia;
+    const correcto = dependenciaCumplida && item.verificar(codigo);
 
     resultados.push({
       id: item.id,
