@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     {
       id: "1",
       descripcion: "<View style={styles.container}></View>",
-      existe: (codigo) => /<View\s+style=\{styles\.container\}\s*><\/View>/.test(codigo),
+      existe: (codigo) => /<View\s+style=\{styles\.container\}\s*>\s*<\/View>/.test(codigo),
     },
     {
       id: "2",
@@ -41,28 +41,28 @@ const styles = StyleSheet.create({
       descripcion: "flex: 1,",
       dependeDe: "3",
       existe: (codigo) => /flex\s*:\s*1/.test(codigo),
-      dentroDe: (codigo) => /container\s*:\s*\{[\s\S]*?flex\s*:\s*1/.test(codigo),
+      dentroDe: (codigo) => /container\s*:\s*\{[^}]*?flex\s*:\s*1[^}]*?\}/.test(codigo),
     },
     {
       id: "5",
       descripcion: "justifyContent: 'center',",
       dependeDe: "3",
       existe: (codigo) => /justifyContent\s*:\s*['"]center['"]/.test(codigo),
-      dentroDe: (codigo) => /container\s*:\s*\{[\s\S]*?justifyContent\s*:\s*['"]center['"]/.test(codigo),
+      dentroDe: (codigo) => /container\s*:\s*\{[^}]*?justifyContent\s*:\s*['"]center['"][^}]*?\}/.test(codigo),
     },
     {
       id: "6",
       descripcion: "alignItems: 'center',",
       dependeDe: "3",
       existe: (codigo) => /alignItems\s*:\s*['"]center['"]/.test(codigo),
-      dentroDe: (codigo) => /container\s*:\s*\{[\s\S]*?alignItems\s*:\s*['"]center['"]/.test(codigo),
+      dentroDe: (codigo) => /container\s*:\s*\{[^}]*?alignItems\s*:\s*['"]center['"][^}]*?\}/.test(codigo),
     },
     {
       id: "7",
       descripcion: "backgroundColor: 'white',",
       dependeDe: "3",
       existe: (codigo) => /backgroundColor\s*:\s*['"]white['"]/.test(codigo),
-      dentroDe: (codigo) => /container\s*:\s*\{[\s\S]*?backgroundColor\s*:\s*['"]white['"]/.test(codigo),
+      dentroDe: (codigo) => /container\s*:\s*\{[^}]*?backgroundColor\s*:\s*['"]white['"][^}]*?\}/.test(codigo),
     },
   ]
 };

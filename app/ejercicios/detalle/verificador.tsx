@@ -140,7 +140,7 @@ export default function Verificador() {
         renderItem={({ item }) => (
           <View style={styles.checkItem}>
             <Text style={styles.icono}>{item.correcto ? '✅' : '❌'}</Text>
-            <Text style={[styles.descripcion, { color: colores.checkTexto }]}>{item.descripcion}</Text>
+            <Text selectable={true} style={[styles.descripcion, { color: colores.checkTexto }]}>{item.descripcion}</Text>
           </View>
         )}
       />

@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, Switch } from 'react-native';
 import { useFocusEffect } from 'expo-router';
-import { ejercicios } from '../../../constants/ejercicios';
+import { ejercicios } from '../../../constants/ejercicios/index.js';
 import { getModoOscuro, setModoOscuro, getEjercicioActual } from '../../../lib/sesion';
 import { setTabActual } from '../../../lib/sesion';
 
@@ -51,7 +51,9 @@ export default function Inspector() {
 
 			<Text style={[styles.label, { color: colores.texto }]}>Codigo a escribir:</Text>
 			<View style={[styles.codigoContainer, { backgroundColor: colores.codigoFondo }]}>
-				<Text style={styles.codigo}>{ejercicio.codigoResuelto}</Text>
+				<Text style={styles.codigo} selectable={true}>
+					{ejercicio.codigoResuelto}
+				</Text>
 			</View>
 
 			<Text style={[styles.label, { color: colores.texto }]}>Que debe contener:</Text>

@@ -1,4 +1,4 @@
-import { ItemCheckList, ItemCheckListResultado } from '../../types/verificacion';
+import { ItemCheckList, ItemCheckListResultado } from '../types/verificacion';
 
 export function verificarCheckList(
   codigo: string,
@@ -7,9 +7,13 @@ export function verificarCheckList(
   const resultados: ItemCheckListResultado[] = [];
 
   for (const item of checkList) {
-    const dependenciaCumplida = item.dependeDe
-      ? resultados.find((r) => r.id === item.dependeDe)?.correcto ?? false
-      : true;
+    const idsDependencia = item.dependeDe
+      ? (Array.isArray(item.dependeDe) ? item.dependeDe : [item.dependeDe])
+      : [];
+
+    const dependenciaCumplida = idsDependencia.every(
+      (idDep) => resultados.find((r) => r.id === idDep)?.correcto ?? false
+    );
 
     const existencia = item.existe(codigo);
     const pertenencia = item.dentroDe ? item.dentroDe(codigo) : true;
