@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { View, Text, StyleSheet, PanResponder } from 'react-native';
 import { Tabs, router } from 'expo-router';
-import { ejercicios } from '../../../constants/ejercicios/index';
+import { ejercicios } from '../../../constants/ejercicios';
 import { setEjercicioActual, getEjercicioActual, getTabActual } from '../../../lib/sesion';
 
 const EJERCICIOS = Object.keys(ejercicios);
@@ -31,7 +31,7 @@ export default function EjercicioLayout() {
   function navegar() {
     const tab = getTabActual();
     console.log('navegando a tab:', tab, 'ejercicio:', getEjercicioActual());
-    router.push(`/ejercicios/detalle/${tab}`);
+    router.push(`./${tab}`);
   }
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -52,7 +52,6 @@ export default function EjercicioLayout() {
     onPanResponderRelease: () => {
       setMostrarEtiqueta(false);
       setEjercicioKey(getEjercicioActual());
-      navegar();
     },
   });
 

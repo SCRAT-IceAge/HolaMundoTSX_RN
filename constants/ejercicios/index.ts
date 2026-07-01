@@ -15,6 +15,23 @@ import { ejercicio_4_2 } from './4_2NavegacionStackNavigatorDefinirHome';
 import { ejercicio_4_3 } from './4_3NavegacionStackNavigatorProps+HomeScreenComponent';
 import { ejercicio_4_4 } from './4_4NavegacionStackNavigatorReturnDeHomeScreen';
 import { ejercicio_4_5 } from './4_5NavegacionStackNavigatorDefinirPropsDetail';
+import { ejercicio_4_6 } from './4_6NavegacionStackNavigatorDefinirDetailScreen';
+import { ejercicio_4_7 } from './4_7NavegacionStackNavigatorConfigurarStackNavegacion';
+import { ejercicio_4_8 } from './4_8NavegacionStackNavigatorComponenteNavigationContainer';
+import { ejercicio_4_9 } from './4_9NavegacionStackNavigatorParametrosEntrePantallasPreparacion';
+import { ejercicio_4_10 } from './4_10NavegacionStackNavigatorComponenteHomeScreenPasarPropsSinReturn';
+import { ejercicio_4_11 } from './4_11NavegacionStackNavigatorComponenteHomeScreenPasarPropsConReturn';
+import { ejercicio_4_12 } from './4_12NavegacionStackNavigatorRecibirPropsYUsarlosEnDetailScreen';
+import { ejercicio_4_13 } from './4_13NavegacionStackNavigatorHeaderDinamico';
+import { ejercicio_7_1 } from './7_1FormulariosSinNombre';
+import { ejercicio_7_2 } from './7_2FormulariosEstadoDerivado';
+import { ejercicio_7_3 } from './7_3FormulariosSinNombreConReturn';
+import { ejercicio_7_4 } from './7_4FormulariosEstadoDerivado';
+import { ejercicio_7_5 } from './7_5FormulariosSwitchBooleanoPreparacion';
+import { ejercicio_7_6 } from './7_6FormulariosSwitchBooleanoReturn';
+import { ejercicio_7_7 } from './7_7FormulariosCopiaUsuarioPeroActualizaAceptaTerminosPreparacion';
+import { ejercicio_7_8 } from './7_8FormulariosCopiaUsuarioPeroActualizaAceptaTerminosComponente';
+
 
 
 
@@ -36,5 +53,21 @@ export const ejercicios: Record<string, typeof ejercicio_1_1> = {
   "4_3": ejercicio_4_3,
   "4_4": ejercicio_4_4,
   "4_5": ejercicio_4_5,
+  "4_6": ejercicio_4_6,
+  "4_7": ejercicio_4_7,
+  "4_8": ejercicio_4_8,
+  "4_9": ejercicio_4_9,
+  "4_10": ejercicio_4_10,
+  "4_11": ejercicio_4_11,
+  "4_12": ejercicio_4_12,
+  "4_13": ejercicio_4_13,
+  "7_1": ejercicio_7_1,
+  "7_2": ejercicio_7_2,
+  "7_3": ejercicio_7_3,
+  "7_4": ejercicio_7_4,
+  "7_5": ejercicio_7_5,
+  "7_6": ejercicio_7_6,
+  "7_7": ejercicio_7_7,
+  "7_8": ejercicio_7_8,
 };
 export type EjercicioId = keyof typeof ejercicios;

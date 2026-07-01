@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, Switch } from 'react-native';
 import { useFocusEffect } from 'expo-router';
-import { ejercicios } from '../../../constants/ejercicios/index.js';
+import { ejercicios } from '../../../constants/ejercicios';
 import { getModoOscuro, setModoOscuro, getEjercicioActual } from '../../../lib/sesion';
 import { setTabActual } from '../../../lib/sesion';
 

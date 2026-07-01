@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, Switch } from 'react-native';
 import { useFocusEffect } from 'expo-router';
-import { ejercicios } from '../../../constants/ejercicios/index';
+import { ejercicios } from '../../../constants/ejercicios';
 import { ItemCheckListResultado } from '../../../types/verificacion';
 import { obtenerUsuarioId, getModoOscuro, setModoOscuro, getEjercicioActual } from '../../../lib/sesion';
 import { guardarIntento } from '../../../lib/db/intentos';

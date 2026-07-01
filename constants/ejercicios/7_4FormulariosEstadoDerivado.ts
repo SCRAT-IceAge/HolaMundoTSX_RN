@@ -1,5 +1,5 @@
 import { ItemCheckList } from '../../types/verificacion';
-export const ejercicio_7_2b: {
+export const ejercicio_7_4: {
   nombre: string;
   leccion: string;
   codigoResuelto: string;
