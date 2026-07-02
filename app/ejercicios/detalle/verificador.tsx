@@ -26,6 +26,7 @@ export default function Verificador() {
   const completado = useRef(false);
 
   const idAnterior = useRef<string | null>(null);
+  const caracteresTipeados = useRef(0);
 
   useEffect(() => {
     return () => {
@@ -47,6 +48,8 @@ export default function Verificador() {
       }
         iniciado.current = false;
         completado.current = false;
+        setTiempo(0);
+        caracteresTipeados.current = 0;
         setTiempo(0);
       }
     }, [])
@@ -80,8 +83,7 @@ export default function Verificador() {
       detenerCronometro();
       const id_usuario = obtenerUsuarioId();
       if (id_usuario !== null) {
-        guardarIntento(id_usuario, id, tiempoFinal);
-        // Procesar recordatorios después de guardar
+        guardarIntento(id_usuario, id, tiempoFinal, caracteresTipeados.current);
         procesarComplecionEjercicio(id_usuario);
       }
     }
@@ -92,12 +94,15 @@ export default function Verificador() {
   }, [checkList]);
 
   const handleCambioTexto = useCallback((texto: string) => {
+    if (texto.length > codigo.length) {
+      caracteresTipeados.current += texto.length - codigo.length;
+    }
     setCodigo(texto);
     if (texto.length > 0) iniciarCronometro();
     const resultado = verificarCheckList(texto, ejercicio.checkList);
     setCheckList(resultado);
     guardarSiCompleto(resultado, tiempo);
-  }, [tiempo]);
+  }, [tiempo, codigo]);
 
   function formatearTiempo(centesimas: number): string {
     const m = Math.floor(centesimas / 6000).toString().padStart(2, '0');

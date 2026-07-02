@@ -20,25 +20,25 @@ export default function LogIn() {
     return true;
   }
 
-function handleLogin() {
-  if (!validar()) return;
+  function handleLogin() {
+    if (!validar()) return;
 
-  const usuario = obtenerUsuarioPorEmail(email);
-  if (!usuario) {
-    Alert.alert('Error', 'No existe una cuenta con ese email');
-    return;
+    const usuario = obtenerUsuarioPorEmail(email);
+    if (!usuario) {
+      Alert.alert('Error', 'No existe una cuenta con ese email');
+      return;
+    }
+    if (usuario.contrasena !== contrasena) {
+      Alert.alert('Error', 'Contrasena incorrecta');
+      return;
+    }
+
+    iniciarSesion(usuario.id, usuario.tipo);
+
+    Alert.alert('Exito', 'Sesion iniciada', [
+      { text: 'OK', onPress: () => router.replace('/menu') }
+    ]);
   }
-  if (usuario.contrasena !== contrasena) {
-    Alert.alert('Error', 'Contrasena incorrecta');
-    return;
-  }
-
-  iniciarSesion(usuario.id);
-
-  Alert.alert('Exito', 'Sesion iniciada', [
-    { text: 'OK', onPress: () => router.replace('/menu') }
-  ]);
-}
 
   return (
     <KeyboardAvoidingView

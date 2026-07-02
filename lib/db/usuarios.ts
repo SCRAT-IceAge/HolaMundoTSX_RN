@@ -24,3 +24,16 @@ export function obtenerUsuarioPorEmail(email: string): Usuario | null {
     return null;
   }
 }
+
+export function hacerAdmin(email: string): boolean {
+  try {
+    db.runSync(
+      "UPDATE usuario SET tipo = 'admin' WHERE email = ?;",
+      [email]
+    );
+    return true;
+  } catch (e) {
+    console.log('Error en hacerAdmin:', e);
+    return false;
+  }
+}

@@ -9,12 +9,7 @@ const verTablas = async () => {
   console.log('Tablas que existen:', tablas);
 };
 
-
 verTablas();
-
-
-
-
 
 export function inicializarDB() {
   db.execSync(
@@ -23,8 +18,7 @@ export function inicializarDB() {
     'nombre TEXT NOT NULL,' +
     'email TEXT NOT NULL,' +
     'contrasena TEXT NOT NULL,' +
-    'cadenciaEjercicio REAL DEFAULT 0,' +
-    'cadenciaPromedio REAL DEFAULT 0);' +
+    'tipo TEXT NOT NULL DEFAULT \'alumno\');' +
 
     'CREATE TABLE IF NOT EXISTS ejercicio (' +
     'id TEXT PRIMARY KEY,' +
@@ -36,6 +30,8 @@ export function inicializarDB() {
     'id_usuario INTEGER NOT NULL,' +
     'id_ejercicio TEXT NOT NULL,' +
     'tiempo REAL NOT NULL,' +
+    'caracteres INTEGER NOT NULL,' +
+    'cadencia REAL NOT NULL,' +
     'fecha TEXT NOT NULL,' +
     'recordatorio_1 TEXT,' +
     'recordatorio_3 TEXT,' +

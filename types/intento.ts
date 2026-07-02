@@ -3,6 +3,8 @@ export type Intento = {
   id_usuario: number;
   id_ejercicio: string;
   tiempo: number;
+  caracteres: number;
+  cadencia: number;
   fecha: string;
   recordatorio_1: string;
   recordatorio_3: string;

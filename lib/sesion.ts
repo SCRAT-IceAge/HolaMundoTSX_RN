@@ -1,14 +1,17 @@
 let usuarioId: number | null = null;
+let usuarioTipo: 'alumno' | 'admin' | null = null;
 let modoOscuro: boolean = false;
 let ejercicioActual: string = '1_1';
 let tabActual: string = 'inspector';
 
-export function iniciarSesion(id: number) {
+export function iniciarSesion(id: number, tipo: 'alumno' | 'admin') {
   usuarioId = id;
+  usuarioTipo = tipo;
 }
 
 export function cerrarSesion() {
   usuarioId = null;
+  usuarioTipo = null;
 }
 
 export function obtenerUsuarioId(): number | null {
@@ -17,6 +20,10 @@ export function obtenerUsuarioId(): number | null {
 
 export function hayUsuarioLogueado(): boolean {
   return usuarioId !== null;
+}
+
+export function esAdmin(): boolean {
+  return usuarioTipo === 'admin';
 }
 
 export function getModoOscuro(): boolean {
