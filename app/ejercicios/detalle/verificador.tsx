@@ -1,13 +1,13 @@
 import { useMemo , useState, useCallback, useRef, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, Switch } from 'react-native';
 import { useFocusEffect } from 'expo-router';
-import { ejercicios } from '../../../constants/ejercicios';
+import { ejercicios } from '../../../ejercicios';
 import { ItemCheckListResultado } from '../../../types/verificacion';
 import { obtenerUsuarioId, getModoOscuro, setModoOscuro, getEjercicioActual } from '../../../lib/sesion';
 import { guardarIntento } from '../../../lib/db/intentos';
-import { verificarCheckList } from '../../../lib/checkList';
+import { verificarCheckList } from '../../../lib/dominio/checkList';
 import { setTabActual } from '../../../lib/sesion';
-import { procesarComplecionEjercicio } from '../../../lib/calendar';
+import { procesarComplecionEjercicio } from '../../../lib/servicios/calendar';
 import { useCodigo } from '../../../context/CodigoContext';
 
 export default function Verificador() {

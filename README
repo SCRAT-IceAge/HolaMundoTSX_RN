@@ -1,0 +1,62 @@
+HolaMundoTSX-RN
+
+[Descripción; Tecnologías; Estructura del proyecto; Sistema de validación de ejercicios; Convención de nombres de ejercicios; Cómo correr el proyecto; Notas]
+
+Descripcion
+-----------
+Aplicacion movil desarrollada con React Native y Expo (SDK 54, Expo Router,
+enrutamiento basado en archivos). Es una plataforma de ejercicios para
+aprender React Native, con un sistema de validacion de codigo basado en
+checklists con expresiones regulares.
+
+Tecnologias
+-----------
+- React Native
+- Expo (SDK 54)
+- Expo Router (file-based routing)
+- TypeScript
+- SQLite (base de datos local)
+
+Estructura del proyecto
+------------------------
+app/            Rutas de la aplicacion (Expo Router)
+  auth/         Pantallas de login y registro
+  ejercicios/   Pantallas de listado y detalle de ejercicios
+components/     Componentes reutilizables de UI
+context/        Contextos de React (estado global, ej. CodigoContext)
+ejercicios/     Definiciones de los ejercicios (checklist, codigo resuelto)
+lib/
+  db/           Acceso a base de datos SQLite (usuarios, intentos, recordatorios)
+  dominio/      Logica de negocio pura (validacion de checklist)
+  servicios/    Servicios que orquestan datos + UI (recordatorios, alertas)
+  sesion.ts     Estado de sesion en memoria
+types/          Tipos de dominio compartidos (ejercicio, intento, usuario, verificacion)
+assets/         Iconos e imagenes de la app
+
+Sistema de validacion de ejercicios
+------------------------------------
+Cada ejercicio define una checklist de items con tres condiciones posibles:
+- Existencia: el patron de codigo requerido esta presente
+- Dependencia: un item depende de que otro item se haya cumplido antes
+- Contencion: un patron debe estar dentro de otro bloque de codigo
+
+La validacion se hace mediante expresiones regulares sobre el codigo
+escrito por el usuario, evaluadas por la funcion verificarCheckList
+(lib/dominio/checkList.ts).
+
+Convencion de nombres de ejercicios
+-------------------------------------
+Formato: [clase]_[ejercicio]_[parte]NombreDelEjercicio.tsx
+Ejemplo: 4_9NavegacionStackNavigatorParametrosEntreScreensPreparacion.tsx
+Cuando un ejercicio es complejo se divide en partes independientes
+(ej. 3_3_1, 3_3_2, 3_3_3).
+
+Como correr el proyecto
+-------------------------
+npm install
+npx expo start
+
+Notas
+-----
+Proyecto desarrollado como parte de la materia Desarrollo de Aplicaciones
+Moviles, IFTS16.

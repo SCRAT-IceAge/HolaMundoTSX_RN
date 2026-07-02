@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, PanResponder } from 'react-native';
 import { Tabs, router } from 'expo-router';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
-import { ejercicios } from '../../../constants/ejercicios';
+import { ejercicios } from '../../../ejercicios';
 import { setEjercicioActual, getEjercicioActual, getTabActual } from '../../../lib/sesion';
 
 const EJERCICIOS = Object.keys(ejercicios);

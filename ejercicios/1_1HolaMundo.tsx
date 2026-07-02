@@ -1,4 +1,4 @@
-import { ItemCheckList } from '../../types/verificacion';
+import { ItemCheckList } from '../types/verificacion';
 
 export const ejercicio_1_1: {
   nombre: string;

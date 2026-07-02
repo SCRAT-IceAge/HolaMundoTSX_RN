@@ -12,7 +12,7 @@ import { ejercicio_3_3_2 } from './3_3_2FlatListTarjetaComponent';
 import { ejercicio_3_3_3 } from './3_3_3FlatListCatalogo';
 import { ejercicio_4_1 } from './4_1NavegacionStackNavigatorTypes';
 import { ejercicio_4_2 } from './4_2NavegacionStackNavigatorDefinirHome';
-import { ejercicio_4_3 } from './4_3NavegacionStackNavigatorProps+HomeScreenComponent';
+import { ejercicio_4_3 } from './4_3NavegacionStackNavigatorPropsHomeScreenComponent';
 import { ejercicio_4_4 } from './4_4NavegacionStackNavigatorReturnDeHomeScreen';
 import { ejercicio_4_5 } from './4_5NavegacionStackNavigatorDefinirPropsDetail';
 import { ejercicio_4_6 } from './4_6NavegacionStackNavigatorDefinirDetailScreen';

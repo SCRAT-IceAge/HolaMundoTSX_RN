@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { procesarComplecionEjercicio as procesarRecordatorios } from './db/recordatorios';
+import { procesarComplecionEjercicio as procesarRecordatorios } from '../db/recordatorios';
 
 /**
  * Función principal - ejecutar cuando se completa un ejercicio
