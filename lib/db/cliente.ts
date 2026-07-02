@@ -27,7 +27,17 @@ export function inicializarDB() {
     'recordatorio_3 TEXT,' +
     'recordatorio_7 TEXT,' +
     'FOREIGN KEY (id_usuario) REFERENCES usuario(id),' +
-    'FOREIGN KEY (id_ejercicio) REFERENCES ejercicio(id));'
+    'FOREIGN KEY (id_ejercicio) REFERENCES ejercicio(id));' +
+
+    'CREATE TABLE IF NOT EXISTS recordatorio (' +
+    'id INTEGER PRIMARY KEY AUTOINCREMENT,' +
+    'id_usuario INTEGER NOT NULL,' +
+    'titulo TEXT NOT NULL,' +
+    'descripcion TEXT NOT NULL,' +
+    'fecha_recordatorio TEXT NOT NULL,' +
+    'visto INTEGER DEFAULT 0,' +
+    'fecha_creacion TEXT NOT NULL,' +
+    'FOREIGN KEY (id_usuario) REFERENCES usuario(id));'
   );
 }
 

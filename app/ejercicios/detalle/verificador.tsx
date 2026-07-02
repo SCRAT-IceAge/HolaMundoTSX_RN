@@ -7,6 +7,7 @@ import { obtenerUsuarioId, getModoOscuro, setModoOscuro, getEjercicioActual } fr
 import { guardarIntento } from '../../../lib/db/intentos';
 import { verificarCheckList } from '../../../lib/checkList';
 import { setTabActual } from '../../../lib/sesion';
+import { procesarComplecionEjercicio } from '../../../lib/calendar';
 
 export default function Verificador() {
   const id = getEjercicioActual();
@@ -74,6 +75,8 @@ export default function Verificador() {
       const id_usuario = obtenerUsuarioId();
       if (id_usuario !== null) {
         guardarIntento(id_usuario, id, tiempoFinal);
+        // Procesar recordatorios después de guardar
+        procesarComplecionEjercicio(id_usuario);
       }
     }
   }

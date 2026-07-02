@@ -29,6 +29,12 @@ export default function Menu() {
         <Text style={styles.botonTexto}>Historial</Text>
       </TouchableOpacity>
 
+      <TouchableOpacity
+        style={[styles.boton, !logueado && styles.botonDeshabilitado]}
+        onPress={() => logueado && router.push('/recordatorios')}
+      >
+        <Text style={styles.botonTexto}>📝 Mis Recordatorios</Text>
+      </TouchableOpacity>
     </View>
   );
 }
