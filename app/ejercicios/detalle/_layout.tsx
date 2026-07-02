@@ -14,6 +14,8 @@ export default function EjercicioLayout() {
   const barraRef = useRef<View>(null);
   const alturaBarraRef = useRef(0);
   const [ejercicioKey, setEjercicioKey] = useState(getEjercicioActual());
+  const [altoEtiqueta, setAltoEtiqueta] = useState(0);
+  const [altoContenedor, setAltoContenedor] = useState(0);
 
   function calcularEjercicio(y: number) {
     const porcentaje = Math.max(0, Math.min(1, y / alturaBarraRef.current));
@@ -56,7 +58,7 @@ export default function EjercicioLayout() {
   });
 
   return (
-    <View key={ejercicioKey} style={styles.container}>
+    <View key={ejercicioKey} style={styles.container} onLayout={(e) => setAltoContenedor(e.nativeEvent.layout.height)}>
       <Tabs screenOptions={{ headerShown: false }}>
         <Tabs.Screen name="inspector" options={{ title: 'Inspector' }} />
         <Tabs.Screen name="verificador" options={{ title: 'Verificador' }} />
@@ -73,7 +75,18 @@ export default function EjercicioLayout() {
 
       {/* Etiqueta flotante */}
       {mostrarEtiqueta && (
-        <View style={[styles.etiqueta, { top: `${posicion * 100}%` }]}>
+        <View
+          style={[
+            styles.etiqueta,
+            {
+              top: Math.min(
+                Math.max(posicion * altoContenedor, 0),           // no menos de 0
+                altoContenedor - altoEtiqueta                       // no más que (alto total - alto etiqueta)
+              ),
+            },
+          ]}
+          onLayout={(e) => setAltoEtiqueta(e.nativeEvent.layout.height)}
+        >
           <Text style={styles.etiquetaTexto}>{nombreEjercicio}</Text>
         </View>
       )}
@@ -105,8 +118,8 @@ const styles = StyleSheet.create({
   },
   etiqueta: {
     position: 'absolute',
-    right: 28,
-    backgroundColor: '#000',
+    right: 35,
+    backgroundColor: '#44469c',
     borderRadius: 8,
     padding: 8,
     zIndex: 101,
@@ -114,6 +127,6 @@ const styles = StyleSheet.create({
   },
   etiquetaTexto: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: 40,
   },
 });

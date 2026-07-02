@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useMemo , useState, useCallback, useRef, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, Switch } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { ejercicios } from '../../../constants/ejercicios';
@@ -8,12 +8,13 @@ import { guardarIntento } from '../../../lib/db/intentos';
 import { verificarCheckList } from '../../../lib/checkList';
 import { setTabActual } from '../../../lib/sesion';
 import { procesarComplecionEjercicio } from '../../../lib/calendar';
+import { useCodigo } from '../../../context/CodigoContext';
 
 export default function Verificador() {
   const id = getEjercicioActual();
   const ejercicio = ejercicios[id];
 
-  const [codigo, setCodigo] = useState('');
+  const { codigo, setCodigo } = useCodigo();
   const [checkList, setCheckList] = useState<ItemCheckListResultado[]>(
     ejercicio?.checkList.map((item) => ({ id: item.id, descripcion: item.descripcion, correcto: false })) ?? []
   );
@@ -23,6 +24,8 @@ export default function Verificador() {
   const intervalo = useRef<ReturnType<typeof setInterval> | null>(null);
   const iniciado = useRef(false);
   const completado = useRef(false);
+
+  const idAnterior = useRef<string | null>(null);
 
   useEffect(() => {
     return () => {
@@ -38,7 +41,10 @@ export default function Verificador() {
       const nuevoEjercicio = ejercicios[nuevoId];
       if (nuevoEjercicio) {
         setCheckList(nuevoEjercicio.checkList.map((item) => ({ id: item.id, descripcion: item.descripcion, correcto: false })));
-        setCodigo('');
+         if (idAnterior.current !== nuevoId) {
+        setCodigo('');       // 👈 solo resetea si cambió de ejercicio
+        idAnterior.current = nuevoId;
+      }
         iniciado.current = false;
         completado.current = false;
         setTiempo(0);
@@ -80,6 +86,10 @@ export default function Verificador() {
       }
     }
   }
+
+  const checkListOrdenada = useMemo(() => {
+    return [...checkList].sort((a, b) => Number(a.correcto) - Number(b.correcto));
+  }, [checkList]);
 
   const handleCambioTexto = useCallback((texto: string) => {
     setCodigo(texto);
@@ -137,7 +147,7 @@ export default function Verificador() {
       />
 
       <FlatList
-        data={checkList}
+        data={checkListOrdenada}
         keyExtractor={(item) => item.id}
         style={styles.lista}
         renderItem={({ item }) => (
@@ -189,13 +199,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 2,
+    paddingRight: 12,
     gap: 4,
   },
   icono: {
     fontSize: 18,
   },
   descripcion: {
-    fontSize: 12,
-    flexShrink: 1,
+    fontSize: 16,
+    flex: 1,
   },
 });

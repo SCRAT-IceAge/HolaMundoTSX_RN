@@ -2,6 +2,20 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabaseSync('holamundo.db');
 
+const verTablas = async () => {
+  const tablas = await db.getAllAsync(
+    "SELECT name FROM sqlite_master WHERE type='table'"
+  );
+  console.log('Tablas que existen:', tablas);
+};
+
+
+verTablas();
+
+
+
+
+
 export function inicializarDB() {
   db.execSync(
     'CREATE TABLE IF NOT EXISTS usuario (' +
