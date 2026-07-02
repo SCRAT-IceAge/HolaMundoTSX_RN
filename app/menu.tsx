@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
-import { hayUsuarioLogueado, setEjercicioActual } from '../lib/sesion';
+import { hayUsuarioLogueado, setEjercicioActual, esAdmin } from '../lib/sesion';
 
 export default function Menu() {
   const logueado = hayUsuarioLogueado();
+  const admin = esAdmin();
 
   return (
     <View style={styles.container}>
@@ -35,6 +36,12 @@ export default function Menu() {
       >
         <Text style={styles.botonTexto}>📝 Mis Recordatorios</Text>
       </TouchableOpacity>
+
+      {admin && (
+        <TouchableOpacity style={styles.boton} onPress={() => router.push('/admin')}>
+          <Text style={styles.botonTexto}>🛠️ Panel Admin</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
